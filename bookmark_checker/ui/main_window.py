@@ -8,6 +8,7 @@ from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
     QFileDialog,
+    QHBoxLayout,
     QHeaderView,
     QLabel,
     QMainWindow,
@@ -19,7 +20,6 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QVBoxLayout,
     QWidget,
-    QHBoxLayout,
 )
 
 from bookmark_checker.core.exporters import export_dedupe_report_csv, export_netscape_html
