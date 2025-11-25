@@ -1,6 +1,6 @@
 """Merge logic for selecting representative bookmarks and organizing output."""
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, List, Tuple
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 from bookmark_checker.core.utils import domain_from_url

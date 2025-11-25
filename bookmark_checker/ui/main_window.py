@@ -2,9 +2,9 @@
 
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
-from PyQt6.QtCore import Qt, QTranslator, QLocale
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 from PyQt6.QtWidgets import (
     QApplication,

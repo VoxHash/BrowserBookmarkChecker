@@ -44,8 +44,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/VoxHashTechnologies/BrowserBookmarkChecker.git
-cd BrowserBookmarkChecker
+git clone https://github.com/VoxHash/bookmark_checker.git
+cd bookmark_checker
 
 # Install dependencies
 pip install -r requirements.txt
@@ -355,7 +355,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/VoxHashTechnologies/BrowserBookmarkChecker/issues)
+- **Issues**: [GitHub Issues](https://github.com/VoxHash/bookmark_checker/issues)
 - **Email**: contact@voxhash.dev
 - **Documentation**: See `docs/` folder for detailed documentation
 

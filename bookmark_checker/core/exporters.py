@@ -3,7 +3,6 @@
 import csv
 import html
 from collections import defaultdict
-from pathlib import Path
 from typing import Any, Dict, List
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
