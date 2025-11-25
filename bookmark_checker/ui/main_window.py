@@ -5,9 +5,10 @@ from pathlib import Path
 from typing import Any
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent, QPalette
+from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent, QIcon, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
+    QComboBox,
     QFileDialog,
     QHBoxLayout,
     QHeaderView,
@@ -26,6 +27,7 @@ from PyQt6.QtWidgets import (
 from bookmark_checker.core.exporters import export_dedupe_report_csv, export_netscape_html
 from bookmark_checker.core.merge import merge_collections
 from bookmark_checker.core.parsers import parse_many
+from bookmark_checker.i18n.translations import TRANSLATIONS, get_translation
 
 
 class MainWindow(QMainWindow):
@@ -34,7 +36,6 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         """Initialize the main window."""
         super().__init__()
-        self.setWindowTitle("BrowserBookmarkChecker")
         self.setMinimumSize(1000, 640)
 
         # Data
@@ -42,10 +43,17 @@ class MainWindow(QMainWindow):
 
         self.current_collection: BookmarkCollection | None = None
         self.current_report: list[dict[str, Any]] = []
+        self.current_language = "en"
+
+        # Set window icon
+        icon_path = Path(__file__).parent.parent.parent / "assets" / "icon.svg"
+        if icon_path.exists():
+            self.setWindowIcon(QIcon(str(icon_path)))
 
         # Setup UI
         self._setup_ui()
         self._setup_style()
+        self._update_ui_texts()
 
         # Enable drag and drop
         self.setAcceptDrops(True)
@@ -60,16 +68,40 @@ class MainWindow(QMainWindow):
         top_bar = QWidget()
         top_layout = QHBoxLayout(top_bar)
 
-        self.btn_import = QPushButton("Import Files")
+        # Language selector
+        lang_label = QLabel("Language:")
+        top_layout.addWidget(lang_label)
+        self.language_combo = QComboBox()
+        self.language_combo.addItems(
+            [
+                "English",
+                "Русский",
+                "Português",
+                "Español",
+                "Eesti",
+                "Français",
+                "Deutsch",
+                "日本語",
+                "中文",
+                "한국어",
+                "Bahasa Indonesia",
+            ]
+        )
+        self.language_combo.setCurrentIndex(0)
+        self.language_combo.currentIndexChanged.connect(self._on_language_changed)
+        top_layout.addWidget(self.language_combo)
+        top_layout.addSpacing(10)
+
+        self.btn_import = QPushButton()
         self.btn_import.clicked.connect(self._import_files)
         top_layout.addWidget(self.btn_import)
 
-        self.btn_merge = QPushButton("Find & Merge")
+        self.btn_merge = QPushButton()
         self.btn_merge.clicked.connect(self._find_and_merge)
         self.btn_merge.setEnabled(False)
         top_layout.addWidget(self.btn_merge)
 
-        self.btn_export = QPushButton("Export Merged")
+        self.btn_export = QPushButton()
         self.btn_export.clicked.connect(self._export_merged)
         self.btn_export.setEnabled(False)
         top_layout.addWidget(self.btn_export)
@@ -77,8 +109,8 @@ class MainWindow(QMainWindow):
         top_layout.addStretch()
 
         # Similarity slider
-        similarity_label = QLabel("Similarity:")
-        top_layout.addWidget(similarity_label)
+        self.similarity_label = QLabel()
+        top_layout.addWidget(self.similarity_label)
 
         self.similarity_slider = QSlider(Qt.Orientation.Horizontal)
         self.similarity_slider.setMinimum(0)
@@ -102,9 +134,6 @@ class MainWindow(QMainWindow):
         # Table
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(
-            ["Title", "URL (canonical)", "Folder", "Source", "Count"]
-        )
         header = self.table.horizontalHeader()
         if header:
             header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
@@ -124,10 +153,50 @@ class MainWindow(QMainWindow):
         self.progress_bar.setVisible(False)
         bottom_layout.addWidget(self.progress_bar)
 
-        self.status_label = QLabel("Ready")
+        self.status_label = QLabel()
         bottom_layout.addWidget(self.status_label)
 
         layout.addWidget(bottom_widget)
+
+    def _update_ui_texts(self) -> None:
+        """Update all UI texts based on current language."""
+        lang_codes = ["en", "ru", "pt", "es", "et", "fr", "de", "ja", "zh", "ko", "id"]
+        lang = lang_codes[self.language_combo.currentIndex()]
+
+        self.setWindowTitle(get_translation(lang, "app_title", "BrowserBookmarkChecker"))
+        self.btn_import.setText(get_translation(lang, "import_files", "Import Files"))
+        self.btn_merge.setText(get_translation(lang, "find_merge", "Find & Merge"))
+        self.btn_export.setText(get_translation(lang, "export_merged", "Export Merged"))
+        self.similarity_label.setText(get_translation(lang, "similarity", "Similarity") + ":")
+
+        # Update table headers
+        self.table.setHorizontalHeaderLabels(
+            [
+                get_translation(lang, "title", "Title"),
+                get_translation(lang, "url_canonical", "URL (canonical)"),
+                get_translation(lang, "folder", "Folder"),
+                get_translation(lang, "source", "Source"),
+                get_translation(lang, "count", "Count"),
+            ]
+        )
+
+        # Update status if it's the default "Ready" message
+        if (
+            self.status_label.text()
+            in [
+                get_translation(old_lang, "ready", "Ready")
+                for old_lang in lang_codes
+                if old_lang != lang
+            ]
+            or self.status_label.text() == "Ready"
+        ):
+            self.status_label.setText(get_translation(lang, "ready", "Ready"))
+
+        self.current_language = lang
+
+    def _on_language_changed(self, index: int) -> None:
+        """Handle language change."""
+        self._update_ui_texts()
 
     def _setup_style(self) -> None:
         """Set up dark Fusion style."""
@@ -215,7 +284,9 @@ class MainWindow(QMainWindow):
 
     def _process_files(self, files: list[str]) -> None:
         """Process imported files."""
-        self.status_label.setText("Parsing files...")
+        self.status_label.setText(
+            get_translation(self.current_language, "parsing_files", "Parsing files...")
+        )
         self.progress_bar.setVisible(True)
         self.progress_bar.setRange(0, 0)  # Indeterminate
 
@@ -225,7 +296,7 @@ class MainWindow(QMainWindow):
             if len(collection.bookmarks) == 0:
                 QMessageBox.warning(
                     self,
-                    "No Bookmarks Found",
+                    get_translation(self.current_language, "error", "Error"),
                     f"No bookmarks were found in the selected files.\n\nFiles: {', '.join(files)}",
                 )
                 self.status_label.setText("No bookmarks found in files")
@@ -241,7 +312,9 @@ class MainWindow(QMainWindow):
             import traceback
 
             error_msg = f"Failed to parse files:\n{str(e)}\n\n{traceback.format_exc()}"
-            QMessageBox.critical(self, "Error", error_msg)
+            QMessageBox.critical(
+                self, get_translation(self.current_language, "error", "Error"), error_msg
+            )
             self.status_label.setText("Error loading files")
             self.btn_merge.setEnabled(False)
         finally:
@@ -270,7 +343,11 @@ class MainWindow(QMainWindow):
             )
             self.btn_export.setEnabled(True)
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to merge:\n{e}")
+            QMessageBox.critical(
+                self,
+                get_translation(self.current_language, "error", "Error"),
+                f"Failed to merge:\n{e}",
+            )
             self.status_label.setText("Error during merge")
         finally:
             self.progress_bar.setVisible(False)
@@ -345,10 +422,16 @@ class MainWindow(QMainWindow):
 
             self.status_label.setText(f"Exported to {output_path} and {csv_path}")
             QMessageBox.information(
-                self, "Success", f"Exported successfully!\n\n{output_path}\n{csv_path}"
+                self,
+                get_translation(self.current_language, "success", "Success"),
+                f"{get_translation(self.current_language, 'exported_successfully', 'Exported successfully!')}\n\n{output_path}\n{csv_path}",
             )
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to export:\n{e}")
+            QMessageBox.critical(
+                self,
+                get_translation(self.current_language, "error", "Error"),
+                f"Failed to export:\n{e}",
+            )
             self.status_label.setText("Error during export")
         finally:
             self.progress_bar.setVisible(False)
@@ -358,6 +441,11 @@ def launch_gui() -> None:
     """Launch the GUI application."""
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+
+    # Set application icon
+    icon_path = Path(__file__).parent.parent.parent / "assets" / "icon.svg"
+    if icon_path.exists():
+        app.setWindowIcon(QIcon(str(icon_path)))
 
     # Set dark palette
     palette = QPalette()
