@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "Cross-platform bookmark merger and deduplicator with GUI and CLI"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "VoxHash Technologies", email = "contact@voxhash.dev"}
 ]
@@ -41,6 +41,9 @@ dev = [
 
 [project.scripts]
 bookmark-checker = "bookmark_checker.app:main"
+
+[tool.setuptools]
+packages = ["bookmark_checker"]
 
 [tool.ruff]
 line-length = 100
