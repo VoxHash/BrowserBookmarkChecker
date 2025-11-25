@@ -1,0 +1,4 @@
+# Placeholder - Generate from icon.svg using:
+# - ImageMagick: convert icon.svg -define icon:auto-resize=256,128,64,32,16 icon.ico
+# - Online tools: CloudConvert, ICO Convert, etc.
+

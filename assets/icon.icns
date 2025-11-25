@@ -1,0 +1,4 @@
+# Placeholder - Generate from icon.svg using:
+# - iconutil (macOS): Create .iconset folder with sizes, then: iconutil -c icns icon.iconset
+# - Online tools: CloudConvert, etc.
+

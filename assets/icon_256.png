@@ -1,0 +1,5 @@
+# Placeholder - Generate from icon.svg using:
+# - ImageMagick: convert icon.svg -resize 256x256 icon_256.png
+# - Inkscape: inkscape icon.svg --export-filename=icon_256.png --export-width=256
+# - Online tools: CloudConvert, etc.
+
