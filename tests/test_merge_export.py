@@ -1,10 +1,8 @@
 """Tests for merge and export functionality."""
 
+import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
-import tempfile
-
-import pytest
 
 from bookmark_checker.core.exporters import export_dedupe_report_csv, export_netscape_html
 from bookmark_checker.core.merge import merge_collections
@@ -85,7 +83,7 @@ class TestExportNetscapeHTML:
             export_netscape_html(collection, temp_path)
 
             # Read and verify
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 content = f.read()
                 assert "NETSCAPE-Bookmark-file-1" in content
                 assert "https://example.com" in content
@@ -111,7 +109,7 @@ class TestExportNetscapeHTML:
         try:
             export_netscape_html(collection, temp_path)
 
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 content = f.read()
                 assert "&amp;" in content or "&lt;" in content or "&gt;" in content
         finally:
@@ -137,7 +135,7 @@ class TestExportNetscapeHTML:
         try:
             export_netscape_html(collection, temp_path)
 
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 content = f.read()
                 assert "ADD_DATE" in content
         finally:
@@ -167,7 +165,7 @@ class TestExportCSV:
 
             # Verify file exists and has content
             assert Path(temp_path).exists()
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 content = f.read()
                 assert "canonical_url" in content
                 assert "Example" in content

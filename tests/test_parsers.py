@@ -3,9 +3,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
-
-from bookmark_checker.core.models import BookmarkCollection
 from bookmark_checker.core.parsers import parse_chrome_json, parse_many, parse_netscape_html
 
 

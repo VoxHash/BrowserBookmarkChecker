@@ -1,7 +1,7 @@
 """Deduplication logic with fuzzy title matching."""
 
 from collections import defaultdict
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 try:
     from rapidfuzz import fuzz
@@ -28,7 +28,7 @@ def annotate_canonical(collection: BookmarkCollection) -> None:
 
 def group_duplicates(
     collection: BookmarkCollection, similarity_threshold: int = 85, enable_fuzzy: bool = True
-) -> Tuple[Dict[str, List[Bookmark]], List[Dict[str, Any]]]:
+) -> tuple[dict[str, list[Bookmark]], list[dict[str, Any]]]:
     """
     Group duplicate bookmarks by canonical URL, with optional fuzzy title matching.
 
@@ -43,7 +43,7 @@ def group_duplicates(
         - report: list of dicts with dedupe statistics
     """
     # Primary grouping by canonical URL
-    grouped: Dict[str, List[Bookmark]] = defaultdict(list)
+    grouped: dict[str, list[Bookmark]] = defaultdict(list)
 
     for bookmark in collection.bookmarks:
         key = bookmark.canonical_url or bookmark.url
@@ -52,7 +52,7 @@ def group_duplicates(
     # Fuzzy merge within same domain if enabled
     if enable_fuzzy and fuzz is not None:
         # Group by domain first
-        domain_groups: Dict[str, Dict[str, List[Bookmark]]] = defaultdict(dict)
+        domain_groups: dict[str, dict[str, list[Bookmark]]] = defaultdict(dict)
 
         for canonical_url, bookmarks in grouped.items():
             if not bookmarks:
@@ -61,10 +61,10 @@ def group_duplicates(
             domain_groups[domain][canonical_url] = bookmarks
 
         # Merge groups within same domain based on title similarity
-        merged_grouped: Dict[str, List[Bookmark]] = {}
+        merged_grouped: dict[str, list[Bookmark]] = {}
         consumed_keys: set[str] = set()
 
-        for domain, domain_urls in domain_groups.items():
+        for _domain, domain_urls in domain_groups.items():
             domain_canonicals = list(domain_urls.keys())
 
             for i, canonical_a in enumerate(domain_canonicals):
@@ -110,7 +110,7 @@ def group_duplicates(
         grouped = merged_grouped
 
     # Generate report
-    report: List[Dict[str, Any]] = []
+    report: list[dict[str, Any]] = []
 
     for canonical_url, bookmarks in grouped.items():
         if not bookmarks:

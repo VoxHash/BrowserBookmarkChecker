@@ -3,14 +3,14 @@
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from bs4 import BeautifulSoup
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 
 
-def parse_many(paths: List[str]) -> BookmarkCollection:
+def parse_many(paths: list[str]) -> BookmarkCollection:
     """
     Parse multiple bookmark files and merge into a single collection.
 
@@ -53,7 +53,7 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
     """
     collection = BookmarkCollection()
 
-    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+    with open(path, encoding="utf-8", errors="ignore") as f:
         content = f.read()
 
     soup = BeautifulSoup(content, "html.parser")
@@ -176,10 +176,10 @@ def parse_chrome_json(path: str) -> BookmarkCollection:
     """
     collection = BookmarkCollection()
 
-    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+    with open(path, encoding="utf-8", errors="ignore") as f:
         data = json.load(f)
 
-    def parse_node(node: Dict[str, Any], folder_path: str = "") -> None:
+    def parse_node(node: dict[str, Any], folder_path: str = "") -> None:
         """Recursively parse bookmark tree nodes."""
         node_type = node.get("type", "")
 

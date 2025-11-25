@@ -3,7 +3,7 @@
 import csv
 import html
 from collections import defaultdict
-from typing import Any, Dict, List
+from typing import Any
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 
@@ -17,7 +17,7 @@ def export_netscape_html(collection: BookmarkCollection, path: str) -> None:
         path: Output file path
     """
     # Group bookmarks by folder
-    folder_map: Dict[str, List[Bookmark]] = defaultdict(list)
+    folder_map: dict[str, list[Bookmark]] = defaultdict(list)
 
     for bookmark in collection.bookmarks:
         folder_path = bookmark.folder_path or "Merged"
@@ -39,7 +39,7 @@ def export_netscape_html(collection: BookmarkCollection, path: str) -> None:
         f.write("<H1>Bookmarks</H1>\n")
         f.write("<DL><p>\n")
 
-        current_path_parts: List[str] = []
+        current_path_parts: list[str] = []
         current_indent = 0
 
         for folder_path in sorted_folders:
@@ -51,7 +51,7 @@ def export_netscape_html(collection: BookmarkCollection, path: str) -> None:
 
             # Find common prefix with current path
             common_length = 0
-            for i, (part1, part2) in enumerate(zip(current_path_parts, folder_parts)):
+            for i, (part1, part2) in enumerate(zip(current_path_parts, folder_parts, strict=False)):
                 if part1 == part2:
                     common_length = i + 1
                 else:
@@ -92,7 +92,7 @@ def export_netscape_html(collection: BookmarkCollection, path: str) -> None:
         f.write("</DL><p>\n")
 
 
-def export_dedupe_report_csv(report: List[Dict[str, Any]], path: str) -> None:
+def export_dedupe_report_csv(report: list[dict[str, Any]], path: str) -> None:
     """
     Export deduplication report to CSV.
 

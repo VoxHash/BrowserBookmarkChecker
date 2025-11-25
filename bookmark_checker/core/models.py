@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass
@@ -11,11 +11,11 @@ class Bookmark:
 
     url: str
     title: str
-    added: Optional[datetime] = None
+    added: datetime | None = None
     folder_path: str = ""
     source_file: str = ""
     canonical_url: str = ""
-    meta: Dict[str, Any] = field(default_factory=dict)
+    meta: dict[str, Any] = field(default_factory=dict)
 
     def __hash__(self) -> int:
         """Hash based on canonical URL and title."""
@@ -25,7 +25,10 @@ class Bookmark:
         """Equality based on canonical URL and title."""
         if not isinstance(other, Bookmark):
             return False
-        return (self.canonical_url or self.url) == (other.canonical_url or other.url) and self.title == other.title
+        return (
+            (self.canonical_url or self.url) == (other.canonical_url or other.url)
+            and self.title == other.title
+        )
 
 
 class BookmarkCollection:
@@ -33,8 +36,8 @@ class BookmarkCollection:
 
     def __init__(self) -> None:
         """Initialize an empty collection."""
-        self.bookmarks: List[Bookmark] = []
-        self.source_files: List[str] = []
+        self.bookmarks: list[Bookmark] = []
+        self.source_files: list[str] = []
 
     def add(self, bookmark: Bookmark) -> None:
         """Add a bookmark to the collection."""
@@ -42,7 +45,7 @@ class BookmarkCollection:
         if bookmark.source_file and bookmark.source_file not in self.source_files:
             self.source_files.append(bookmark.source_file)
 
-    def extend(self, bookmarks: List[Bookmark]) -> None:
+    def extend(self, bookmarks: list[Bookmark]) -> None:
         """Add multiple bookmarks."""
         for bookmark in bookmarks:
             self.add(bookmark)

@@ -1,6 +1,6 @@
 """Merge logic for selecting representative bookmarks and organizing output."""
 
-from typing import Any, List, Tuple
+from typing import Any
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 from bookmark_checker.core.utils import domain_from_url
@@ -8,7 +8,7 @@ from bookmark_checker.core.utils import domain_from_url
 
 def merge_collections(
     collection: BookmarkCollection, similarity_threshold: int = 85, enable_fuzzy: bool = True
-) -> Tuple[BookmarkCollection, List[Dict[str, Any]]]:
+) -> tuple[BookmarkCollection, list[dict[str, Any]]]:
     """
     Merge duplicate bookmarks, selecting representatives and organizing by domain.
 

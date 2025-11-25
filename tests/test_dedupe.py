@@ -1,9 +1,5 @@
 """Tests for deduplication logic."""
 
-from datetime import datetime
-
-import pytest
-
 from bookmark_checker.core.dedupe import annotate_canonical, group_duplicates
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 from bookmark_checker.core.utils import canonicalize_url

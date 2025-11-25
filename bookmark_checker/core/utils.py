@@ -1,7 +1,7 @@
 """Utility functions for URL canonicalization and text normalization."""
 
 import re
-from urllib.parse import parse_qs, urlparse, urlunparse, urlencode
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 # Tracking parameters to remove (case-insensitive)
 TRACKING_PARAMS = {

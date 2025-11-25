@@ -1,7 +1,5 @@
 """Tests for utility functions."""
 
-import pytest
-
 from bookmark_checker.core.utils import canonicalize_url, domain_from_url, normalize_whitespace
 
 

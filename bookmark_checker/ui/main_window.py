@@ -2,10 +2,9 @@
 
 import sys
 from pathlib import Path
-from typing import List
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QDragEnterEvent, QDropEvent
+from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -39,7 +38,7 @@ class MainWindow(QMainWindow):
 
         # Data
         self.current_collection = None
-        self.current_report: List[dict] = []
+        self.current_report: list[dict] = []
 
         # Setup UI
         self._setup_ui()
@@ -100,12 +99,20 @@ class MainWindow(QMainWindow):
         # Table
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["Title", "URL (canonical)", "Folder", "Source", "Count"])
+        self.table.setHorizontalHeaderLabels(
+            ["Title", "URL (canonical)", "Folder", "Source", "Count"]
+        )
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(
+            2, QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.table.horizontalHeader().setSectionResizeMode(
+            3, QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.table.horizontalHeader().setSectionResizeMode(
+            4, QHeaderView.ResizeMode.ResizeToContents
+        )
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         layout.addWidget(self.table)
@@ -198,7 +205,7 @@ class MainWindow(QMainWindow):
         if files:
             self._process_files(files)
 
-    def _process_files(self, files: List[str]) -> None:
+    def _process_files(self, files: list[str]) -> None:
         """Process imported files."""
         self.status_label.setText("Parsing files...")
         self.progress_bar.setVisible(True)
@@ -216,7 +223,8 @@ class MainWindow(QMainWindow):
                 self.btn_merge.setEnabled(False)
             else:
                 self.status_label.setText(
-                    f"Loaded {len(self.current_collection.bookmarks)} bookmarks from {len(files)} file(s)"
+                    f"Loaded {len(self.current_collection.bookmarks)} "
+                    f"bookmarks from {len(files)} file(s)"
                 )
                 self.btn_merge.setEnabled(True)
                 # Show bookmarks in table immediately
@@ -275,7 +283,7 @@ class MainWindow(QMainWindow):
             self.table.setItem(row, 3, QTableWidgetItem(bookmark.source_file))
             self.table.setItem(row, 4, QTableWidgetItem("1"))  # Count is 1 for raw bookmarks
 
-    def _populate_table(self, report: List[dict]) -> None:
+    def _populate_table(self, report: list[dict]) -> None:
         """Populate table with dedupe report."""
         self.table.setRowCount(len(report))
 
@@ -324,7 +332,9 @@ class MainWindow(QMainWindow):
             export_dedupe_report_csv(self.current_report, str(csv_path))
 
             self.status_label.setText(f"Exported to {output_path} and {csv_path}")
-            QMessageBox.information(self, "Success", f"Exported successfully!\n\n{output_path}\n{csv_path}")
+            QMessageBox.information(
+                self, "Success", f"Exported successfully!\n\n{output_path}\n{csv_path}"
+            )
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to export:\n{e}")
             self.status_label.setText("Error during export")
@@ -338,8 +348,6 @@ def launch_gui() -> None:
     app.setStyle("Fusion")
 
     # Set dark palette
-    from PyQt6.QtGui import QPalette, QColor
-
     palette = QPalette()
     palette.setColor(QPalette.ColorRole.Window, QColor(43, 43, 43))
     palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))
