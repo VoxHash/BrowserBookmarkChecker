@@ -137,4 +137,3 @@ class TestGroupDuplicates:
         # First item should have count 3
         assert report[0]["count"] == 3
         assert report[0]["canonical_url"] == canonicalize_url("https://example.com/duplicate")
-

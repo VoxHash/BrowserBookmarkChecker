@@ -117,4 +117,3 @@ def export_dedupe_report_csv(report: list[dict[str, Any]], path: str) -> None:
                     "sources": " | ".join(item["sources"]),
                 }
             )
-

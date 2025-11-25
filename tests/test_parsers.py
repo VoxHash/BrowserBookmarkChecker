@@ -161,4 +161,3 @@ class TestParseMany:
         finally:
             Path(temp_path1).unlink()
             Path(temp_path2).unlink()
-

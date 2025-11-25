@@ -137,4 +137,3 @@ def group_duplicates(
     report.sort(key=lambda x: (-x["count"], x["title"].lower()))
 
     return dict(grouped), report
-

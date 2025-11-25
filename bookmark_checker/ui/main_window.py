@@ -132,7 +132,8 @@ class MainWindow(QMainWindow):
 
     def _setup_style(self) -> None:
         """Set up dark Fusion style."""
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             QMainWindow {
                 background-color: #2b2b2b;
                 color: #ffffff;
@@ -182,7 +183,8 @@ class MainWindow(QMainWindow):
             QProgressBar::chunk {
                 background-color: #4caf50;
             }
-        """)
+        """
+        )
 
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
         """Handle drag enter event."""
@@ -231,6 +233,7 @@ class MainWindow(QMainWindow):
                 self._populate_table_from_collection()
         except Exception as e:
             import traceback
+
             error_msg = f"Failed to parse files:\n{str(e)}\n\n{traceback.format_exc()}"
             QMessageBox.critical(self, "Error", error_msg)
             self.status_label.setText("Error loading files")
@@ -326,8 +329,10 @@ class MainWindow(QMainWindow):
             export_netscape_html(merged, output_path)
 
             # Export CSV
-            csv_path = Path(output_path).with_suffix("").with_name(
-                f"{Path(output_path).stem}_dedupe_report.csv"
+            csv_path = (
+                Path(output_path)
+                .with_suffix("")
+                .with_name(f"{Path(output_path).stem}_dedupe_report.csv")
             )
             export_dedupe_report_csv(self.current_report, str(csv_path))
 
@@ -367,4 +372,3 @@ def launch_gui() -> None:
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
-

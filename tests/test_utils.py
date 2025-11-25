@@ -128,4 +128,3 @@ class TestDomainFromURL:
         """Test handling of invalid URLs."""
         assert domain_from_url("") == ""
         assert domain_from_url("not a url") == ""
-

@@ -25,10 +25,9 @@ class Bookmark:
         """Equality based on canonical URL and title."""
         if not isinstance(other, Bookmark):
             return False
-        return (
-            (self.canonical_url or self.url) == (other.canonical_url or other.url)
-            and self.title == other.title
-        )
+        return (self.canonical_url or self.url) == (
+            other.canonical_url or other.url
+        ) and self.title == other.title
 
 
 class BookmarkCollection:
@@ -57,4 +56,3 @@ class BookmarkCollection:
     def __iter__(self):
         """Iterate over bookmarks."""
         return iter(self.bookmarks)
-

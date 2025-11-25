@@ -194,4 +194,3 @@ TRANSLATIONS = {
 def get_translation(lang: str, key: str, default: str = "") -> str:
     """Get translation for a key in the specified language."""
     return TRANSLATIONS.get(lang, TRANSLATIONS["en"]).get(key, default)
-

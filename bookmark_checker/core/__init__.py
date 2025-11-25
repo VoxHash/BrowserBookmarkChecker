@@ -1,2 +1,1 @@
 """Core bookmark processing modules."""
-

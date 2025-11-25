@@ -62,22 +62,22 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
         """Get folder path by finding all parent DLs and their associated H3 folders."""
         path_parts = []
         current_dl = element.find_parent("dl")
-        
+
         # Walk up the tree through all parent DLs
         visited_dls = set()
         while current_dl:
             if current_dl in visited_dls:
                 break
             visited_dls.add(current_dl)
-            
+
             # Find the H3 that is associated with this DL
             # The H3 can be:
             # 1. A direct previous sibling of the DL
             # 2. Inside a DT that is a previous sibling of the DL
             # 3. Inside a DT that is a child of the parent DL
-            
+
             folder_name = None
-            
+
             # Method 1: Check if H3 is a direct previous sibling
             for prev_sib in current_dl.previous_siblings:
                 if not hasattr(prev_sib, "name"):
@@ -91,7 +91,7 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
                     if h3 and hasattr(h3, "get_text"):
                         folder_name = h3.get_text(strip=True)
                         break
-            
+
             # Method 3: Check parent DL's children for DT with H3 before this DL
             if not folder_name and current_dl.parent:
                 parent = current_dl.parent
@@ -120,25 +120,25 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
                                     break
                             if folder_name:
                                 break
-            
+
             if folder_name:
                 path_parts.insert(0, folder_name)
-            
+
             # Move to parent DL
             current_dl = current_dl.find_parent("dl")
-        
+
         return "/".join(path_parts)
 
     # Find all bookmark links (A tags)
     all_links = soup.find_all("a", href=True)
-    
+
     for link in all_links:
         url = link.get("href", "").strip()
         if not url or url.startswith("data:"):
             continue
-        
+
         title = link.get_text(strip=True) or url
-        
+
         # Parse ADD_DATE if present
         added = None
         add_date = link.get("add_date")
@@ -148,10 +148,10 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
                 added = datetime.fromtimestamp(timestamp)
             except (ValueError, OSError):
                 pass
-        
+
         # Get folder path
         folder_path = get_folder_path_for_element(link)
-        
+
         bookmark = Bookmark(
             url=url,
             title=title,
@@ -227,4 +227,3 @@ def parse_chrome_json(path: str) -> BookmarkCollection:
             parse_node(roots[root_key], root_key.replace("_", " ").title())
 
     return collection
-

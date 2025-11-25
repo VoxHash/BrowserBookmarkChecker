@@ -106,4 +106,3 @@ def domain_from_url(url: str) -> str:
         return netloc
     except Exception:
         return ""
-

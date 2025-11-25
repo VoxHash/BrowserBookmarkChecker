@@ -172,4 +172,3 @@ class TestExportCSV:
                 assert "2" in content
         finally:
             Path(temp_path).unlink()
-

@@ -65,4 +65,3 @@ def merge_collections(
         merged.add(merged_bookmark)
 
     return merged, report
-
