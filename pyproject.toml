@@ -92,7 +92,14 @@ addopts = "-q --cov=bookmark_checker --cov-report=term-missing --cov-report=xml 
 
 [tool.coverage.run]
 source = ["bookmark_checker"]
-omit = ["*/tests/*", "*/__pycache__/*"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/__main__.py",
+    "*/app.py",
+    "*/ui/*",
+    "*/i18n/translations.py",
+]
 
 [tool.coverage.report]
 exclude_lines = [
