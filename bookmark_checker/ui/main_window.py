@@ -300,11 +300,20 @@ class MainWindow(QMainWindow):
                     get_translation(self.current_language, "error", "Error"),
                     f"No bookmarks were found in the selected files.\n\nFiles: {', '.join(files)}",
                 )
-                self.status_label.setText("No bookmarks found in files")
+                self.status_label.setText(
+                    get_translation(
+                        self.current_language, "no_bookmarks_found", "No bookmarks found in files"
+                    )
+                )
                 self.btn_merge.setEnabled(False)
             else:
+                loaded_msg = get_translation(
+                    self.current_language,
+                    "loaded_bookmarks",
+                    "Loaded {count} bookmarks from {files} file(s)",
+                )
                 self.status_label.setText(
-                    f"Loaded {len(collection.bookmarks)} " f"bookmarks from {len(files)} file(s)"
+                    loaded_msg.format(count=len(collection.bookmarks), files=len(files))
                 )
                 self.btn_merge.setEnabled(True)
                 # Show bookmarks in table immediately
@@ -316,7 +325,9 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(
                 self, get_translation(self.current_language, "error", "Error"), error_msg
             )
-            self.status_label.setText("Error loading files")
+            self.status_label.setText(
+                get_translation(self.current_language, "error_loading_files", "Error loading files")
+            )
             self.btn_merge.setEnabled(False)
         finally:
             self.progress_bar.setVisible(False)
@@ -326,7 +337,9 @@ class MainWindow(QMainWindow):
         if not self.current_collection:
             return
 
-        self.status_label.setText("Merging and deduplicating...")
+        self.status_label.setText(
+            get_translation(self.current_language, "merging", "Merging and deduplicating...")
+        )
         self.progress_bar.setVisible(True)
         self.progress_bar.setRange(0, 0)
 
@@ -339,8 +352,13 @@ class MainWindow(QMainWindow):
             self.current_report = report
             self._populate_table(report)
 
+            merged_msg = get_translation(
+                self.current_language,
+                "merged_to",
+                "Merged to {count} unique bookmarks ({groups} groups)",
+            )
             self.status_label.setText(
-                f"Merged to {len(merged.bookmarks)} unique bookmarks ({len(report)} groups)"
+                merged_msg.format(count=len(merged.bookmarks), groups=len(report))
             )
             self.btn_export.setEnabled(True)
         except Exception as e:
@@ -349,7 +367,9 @@ class MainWindow(QMainWindow):
                 get_translation(self.current_language, "error", "Error"),
                 f"Failed to merge:\n{e}",
             )
-            self.status_label.setText("Error during merge")
+            self.status_label.setText(
+                get_translation(self.current_language, "error_during_merge", "Error during merge")
+            )
         finally:
             self.progress_bar.setVisible(False)
 
@@ -399,7 +419,9 @@ class MainWindow(QMainWindow):
         if not output_path:
             return
 
-        self.status_label.setText("Exporting...")
+        self.status_label.setText(
+            get_translation(self.current_language, "exporting", "Exporting...")
+        )
         self.progress_bar.setVisible(True)
         self.progress_bar.setRange(0, 0)
 
@@ -421,7 +443,12 @@ class MainWindow(QMainWindow):
             )
             export_dedupe_report_csv(self.current_report, str(csv_path))
 
-            self.status_label.setText(f"Exported to {output_path} and {csv_path}")
+            exported_to_msg = get_translation(
+                self.current_language,
+                "exported_to",
+                "Exported to {path1} and {path2}",
+            )
+            self.status_label.setText(exported_to_msg.format(path1=output_path, path2=csv_path))
             exported_msg = get_translation(
                 self.current_language, "exported_successfully", "Exported successfully!"
             )
@@ -436,7 +463,9 @@ class MainWindow(QMainWindow):
                 get_translation(self.current_language, "error", "Error"),
                 f"Failed to export:\n{e}",
             )
-            self.status_label.setText("Error during export")
+            self.status_label.setText(
+                get_translation(self.current_language, "error_during_export", "Error during export")
+            )
         finally:
             self.progress_bar.setVisible(False)
 
