@@ -232,8 +232,7 @@ class MainWindow(QMainWindow):
                 self.btn_merge.setEnabled(False)
             else:
                 self.status_label.setText(
-                    f"Loaded {len(collection.bookmarks)} "
-                    f"bookmarks from {len(files)} file(s)"
+                    f"Loaded {len(collection.bookmarks)} " f"bookmarks from {len(files)} file(s)"
                 )
                 self.btn_merge.setEnabled(True)
                 # Show bookmarks in table immediately
