@@ -3,6 +3,9 @@
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any
 
+from bookmark_checker.core.models import Bookmark, BookmarkCollection
+from bookmark_checker.core.utils import domain_from_url, normalize_whitespace
+
 if TYPE_CHECKING:
     from rapidfuzz import fuzz as fuzz_module
 else:
@@ -12,9 +15,6 @@ else:
         fuzz_module = None
 
 fuzz = fuzz_module
-
-from bookmark_checker.core.models import Bookmark, BookmarkCollection
-from bookmark_checker.core.utils import domain_from_url, normalize_whitespace
 
 
 def annotate_canonical(collection: BookmarkCollection) -> None:
