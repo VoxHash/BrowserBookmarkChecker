@@ -1,12 +1,17 @@
 """Deduplication logic with fuzzy title matching."""
 
 from collections import defaultdict
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-try:
-    from rapidfuzz import fuzz
-except ImportError:
-    fuzz = None
+if TYPE_CHECKING:
+    from rapidfuzz import fuzz as fuzz_module
+else:
+    try:
+        from rapidfuzz import fuzz as fuzz_module
+    except ImportError:
+        fuzz_module = None
+
+fuzz = fuzz_module
 
 from bookmark_checker.core.models import Bookmark, BookmarkCollection
 from bookmark_checker.core.utils import domain_from_url, normalize_whitespace

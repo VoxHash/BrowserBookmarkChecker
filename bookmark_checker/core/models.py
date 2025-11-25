@@ -1,5 +1,6 @@
 """Data models for bookmarks."""
 
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -53,6 +54,6 @@ class BookmarkCollection:
         """Return the number of bookmarks."""
         return len(self.bookmarks)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Bookmark]:
         """Iterate over bookmarks."""
         return iter(self.bookmarks)

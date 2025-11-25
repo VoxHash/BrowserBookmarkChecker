@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+from typing import Any
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent, QPalette
@@ -37,8 +38,10 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1000, 640)
 
         # Data
-        self.current_collection = None
-        self.current_report: list[dict] = []
+        from bookmark_checker.core.models import BookmarkCollection
+
+        self.current_collection: BookmarkCollection | None = None
+        self.current_report: list[dict[str, Any]] = []
 
         # Setup UI
         self._setup_ui()
@@ -102,17 +105,13 @@ class MainWindow(QMainWindow):
         self.table.setHorizontalHeaderLabels(
             ["Title", "URL (canonical)", "Folder", "Source", "Count"]
         )
-        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(
-            2, QHeaderView.ResizeMode.ResizeToContents
-        )
-        self.table.horizontalHeader().setSectionResizeMode(
-            3, QHeaderView.ResizeMode.ResizeToContents
-        )
-        self.table.horizontalHeader().setSectionResizeMode(
-            4, QHeaderView.ResizeMode.ResizeToContents
-        )
+        header = self.table.horizontalHeader()
+        if header:
+            header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         layout.addWidget(self.table)
@@ -186,15 +185,22 @@ class MainWindow(QMainWindow):
         """
         )
 
-    def dragEnterEvent(self, event: QDragEnterEvent) -> None:
+    def dragEnterEvent(self, event: QDragEnterEvent | None) -> None:
         """Handle drag enter event."""
-        if event.mimeData().hasUrls():
+        if event is None:
+            return
+        mime_data = event.mimeData()
+        if mime_data and mime_data.hasUrls():
             event.acceptProposedAction()
 
-    def dropEvent(self, event: QDropEvent) -> None:
+    def dropEvent(self, event: QDropEvent | None) -> None:
         """Handle drop event."""
-        files = [url.toLocalFile() for url in event.mimeData().urls()]
-        self._process_files(files)
+        if event is None:
+            return
+        mime_data = event.mimeData()
+        if mime_data:
+            files = [url.toLocalFile() for url in mime_data.urls()]
+            self._process_files(files)
 
     def _import_files(self) -> None:
         """Open file dialog to import bookmark files."""
@@ -214,8 +220,9 @@ class MainWindow(QMainWindow):
         self.progress_bar.setRange(0, 0)  # Indeterminate
 
         try:
-            self.current_collection = parse_many(files)
-            if len(self.current_collection.bookmarks) == 0:
+            collection = parse_many(files)
+            self.current_collection = collection
+            if len(collection.bookmarks) == 0:
                 QMessageBox.warning(
                     self,
                     "No Bookmarks Found",
@@ -225,7 +232,7 @@ class MainWindow(QMainWindow):
                 self.btn_merge.setEnabled(False)
             else:
                 self.status_label.setText(
-                    f"Loaded {len(self.current_collection.bookmarks)} "
+                    f"Loaded {len(collection.bookmarks)} "
                     f"bookmarks from {len(files)} file(s)"
                 )
                 self.btn_merge.setEnabled(True)
@@ -286,7 +293,7 @@ class MainWindow(QMainWindow):
             self.table.setItem(row, 3, QTableWidgetItem(bookmark.source_file))
             self.table.setItem(row, 4, QTableWidgetItem("1"))  # Count is 1 for raw bookmarks
 
-    def _populate_table(self, report: list[dict]) -> None:
+    def _populate_table(self, report: list[dict[str, Any]]) -> None:
         """Populate table with dedupe report."""
         self.table.setRowCount(len(report))
 
@@ -301,7 +308,8 @@ class MainWindow(QMainWindow):
 
     def _export_merged(self) -> None:
         """Export merged bookmarks."""
-        if not self.current_collection or not self.current_report:
+        collection = self.current_collection
+        if not collection or not self.current_report:
             return
 
         output_path, _ = QFileDialog.getSaveFileName(
@@ -322,7 +330,7 @@ class MainWindow(QMainWindow):
             # Re-merge to get merged collection
             similarity = self.similarity_slider.value()
             merged, _ = merge_collections(
-                self.current_collection, similarity_threshold=similarity, enable_fuzzy=True
+                collection, similarity_threshold=similarity, enable_fuzzy=True
             )
 
             # Export HTML

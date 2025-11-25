@@ -60,7 +60,7 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
 
     def get_folder_path_for_element(element: Any) -> str:
         """Get folder path by finding all parent DLs and their associated H3 folders."""
-        path_parts = []
+        path_parts: list[str] = []
         current_dl = element.find_parent("dl")
 
         # Walk up the tree through all parent DLs
@@ -133,7 +133,8 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
     all_links = soup.find_all("a", href=True)
 
     for link in all_links:
-        url = link.get("href", "").strip()
+        href_attr = link.get("href", "")
+        url = str(href_attr).strip() if href_attr else ""
         if not url or url.startswith("data:"):
             continue
 
@@ -144,7 +145,7 @@ def parse_netscape_html(path: str) -> BookmarkCollection:
         add_date = link.get("add_date")
         if add_date:
             try:
-                timestamp = int(add_date)
+                timestamp = int(str(add_date))
                 added = datetime.fromtimestamp(timestamp)
             except (ValueError, OSError):
                 pass
