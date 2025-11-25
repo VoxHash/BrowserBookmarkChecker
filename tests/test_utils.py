@@ -1,5 +1,7 @@
 """Tests for utility functions."""
 
+from urllib.parse import parse_qs, urlparse
+
 from bookmark_checker.core.utils import canonicalize_url, domain_from_url, normalize_whitespace
 
 
@@ -81,8 +83,6 @@ class TestCanonicalizeURL:
             result = canonicalize_url(url)
             # Check that param is not in the query string (not just anywhere in URL)
             # Parse the result to check query parameters
-            from urllib.parse import urlparse, parse_qs
-
             parsed = urlparse(result)
             query_params = parse_qs(parsed.query)
             # Check that the tracking param is not in the query string
