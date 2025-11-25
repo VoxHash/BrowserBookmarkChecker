@@ -79,8 +79,15 @@ class TestCanonicalizeURL:
         for param in params:
             url = f"https://example.com/page?{param}=value&keep=me"
             result = canonicalize_url(url)
-            assert param not in result.lower()
-            assert "keep=me" in result
+            # Check that param is not in the query string (not just anywhere in URL)
+            # Parse the result to check query parameters
+            from urllib.parse import urlparse, parse_qs
+
+            parsed = urlparse(result)
+            query_params = parse_qs(parsed.query)
+            # Check that the tracking param is not in the query string
+            assert param.lower() not in [k.lower() for k in query_params.keys()]
+            assert "keep" in query_params
 
 
 class TestNormalizeWhitespace:

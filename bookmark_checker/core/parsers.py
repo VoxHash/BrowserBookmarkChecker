@@ -197,7 +197,7 @@ def parse_chrome_json(path: str) -> BookmarkCollection:
                     # Chrome timestamp is microseconds since 1601-01-01
                     # Convert to Unix timestamp
                     chrome_epoch = 11644473600000000  # microseconds
-                    unix_timestamp = (int(date_added) - chrome_epoch) / 1000000
+                    unix_timestamp = (int(str(date_added)) - chrome_epoch) / 1000000
                     added = datetime.fromtimestamp(unix_timestamp)
                 except (ValueError, OSError):
                     pass
@@ -211,10 +211,13 @@ def parse_chrome_json(path: str) -> BookmarkCollection:
                     source_file=path,
                 )
                 collection.add(bookmark)
-        elif node_type == "folder":
-            # Folder
+        elif node_type == "folder" or (not node_type and "children" in node):
+            # Folder (or root node without explicit type)
             name = node.get("name", "").strip()
-            new_path = f"{folder_path}/{name}" if folder_path else name
+            if name:
+                new_path = f"{folder_path}/{name}" if folder_path else name
+            else:
+                new_path = folder_path
 
             # Process children
             children = node.get("children", [])
