@@ -69,8 +69,8 @@ class MainWindow(QMainWindow):
         top_layout = QHBoxLayout(top_bar)
 
         # Language selector
-        lang_label = QLabel("Language:")
-        top_layout.addWidget(lang_label)
+        self.lang_label = QLabel()
+        top_layout.addWidget(self.lang_label)
         self.language_combo = QComboBox()
         self.language_combo.addItems(
             [
@@ -164,6 +164,7 @@ class MainWindow(QMainWindow):
         lang = lang_codes[self.language_combo.currentIndex()]
 
         self.setWindowTitle(get_translation(lang, "app_title", "BrowserBookmarkChecker"))
+        self.lang_label.setText(get_translation(lang, "language", "Language") + ":")
         self.btn_import.setText(get_translation(lang, "import_files", "Import Files"))
         self.btn_merge.setText(get_translation(lang, "find_merge", "Find & Merge"))
         self.btn_export.setText(get_translation(lang, "export_merged", "Export Merged"))
