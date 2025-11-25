@@ -27,7 +27,7 @@ from PyQt6.QtWidgets import (
 from bookmark_checker.core.exporters import export_dedupe_report_csv, export_netscape_html
 from bookmark_checker.core.merge import merge_collections
 from bookmark_checker.core.parsers import parse_many
-from bookmark_checker.i18n.translations import TRANSLATIONS, get_translation
+from bookmark_checker.i18n.translations import get_translation
 
 
 class MainWindow(QMainWindow):
@@ -422,10 +422,13 @@ class MainWindow(QMainWindow):
             export_dedupe_report_csv(self.current_report, str(csv_path))
 
             self.status_label.setText(f"Exported to {output_path} and {csv_path}")
+            exported_msg = get_translation(
+                self.current_language, "exported_successfully", "Exported successfully!"
+            )
             QMessageBox.information(
                 self,
                 get_translation(self.current_language, "success", "Success"),
-                f"{get_translation(self.current_language, 'exported_successfully', 'Exported successfully!')}\n\n{output_path}\n{csv_path}",
+                f"{exported_msg}\n\n{output_path}\n{csv_path}",
             )
         except Exception as e:
             QMessageBox.critical(
