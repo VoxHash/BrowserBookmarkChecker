@@ -77,6 +77,17 @@ Or use the convenience script:
 4. Review results in the table
 5. Click **Export Merged** to save HTML and CSV reports
 
+### Screenshots
+
+**Import Files:**
+![Import Files](screenshots/import-files-screenshot.png)
+
+**Find & Merge:**
+![Find & Merge](screenshots/find-merge-screenshot.png)
+
+**Export Merged:**
+![Export Merged](screenshots/export-merged.png)
+
 ### CLI Mode
 
 Merge bookmarks from command line:
