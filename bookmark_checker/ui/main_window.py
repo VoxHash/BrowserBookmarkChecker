@@ -457,7 +457,9 @@ class MainWindow(QMainWindow):
                 exported_to_msg.format(path1=output_path, path2=csv_path)
             )
             exported_msg = get_translation(
-                self.current_language, "exported_successfully", "Exported successfully!"
+                self.current_language,
+                "exported_successfully",
+                "Exported successfully!",
             )
             QMessageBox.information(
                 self,
