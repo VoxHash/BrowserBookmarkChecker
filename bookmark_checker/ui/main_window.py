@@ -453,7 +453,9 @@ class MainWindow(QMainWindow):
                 "exported_to",
                 "Exported to {path1} and {path2}",
             )
-            self.status_label.setText(exported_to_msg.format(path1=output_path, path2=csv_path))
+            self.status_label.setText(
+                exported_to_msg.format(path1=output_path, path2=csv_path)
+            )
             exported_msg = get_translation(
                 self.current_language, "exported_successfully", "Exported successfully!"
             )

@@ -37,9 +37,9 @@ jobs:
         run: |
           ruff check bookmark_checker tests
 
-      - name: Format with black
+      - name: Format check with black
         run: |
-          black bookmark_checker tests
+          black --check bookmark_checker tests
 
       - name: Type check with mypy
         run: |
