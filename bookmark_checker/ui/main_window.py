@@ -169,11 +169,11 @@ class MainWindow(QMainWindow):
         lang = lang_codes[self.language_combo.currentIndex()]
 
         self.setWindowTitle(get_translation(lang, "app_title", "BrowserBookmarkChecker"))
-        self.lang_label.setText(get_translation(lang, "language", "Language") + ":")
+        self.lang_label.setText(f"{get_translation(lang, 'language', 'Language')}:")
         self.btn_import.setText(get_translation(lang, "import_files", "Import Files"))
         self.btn_merge.setText(get_translation(lang, "find_merge", "Find & Merge"))
         self.btn_export.setText(get_translation(lang, "export_merged", "Export Merged"))
-        self.similarity_label.setText(get_translation(lang, "similarity", "Similarity") + ":")
+        self.similarity_label.setText(f"{get_translation(lang, 'similarity', 'Similarity')}:")
 
         # Update table headers
         self.table.setHorizontalHeaderLabels(
