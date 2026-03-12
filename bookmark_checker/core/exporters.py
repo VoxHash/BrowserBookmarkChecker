@@ -51,7 +51,7 @@ def export_netscape_html(collection: BookmarkCollection, path: str) -> None:
 
             # Find common prefix with current path
             common_length = 0
-            for i, (part1, part2) in enumerate(zip(current_path_parts, folder_parts)):
+            for i, (part1, part2) in enumerate(zip(current_path_parts, folder_parts, strict=False)):
                 if part1 == part2:
                     common_length = i + 1
                 else:
