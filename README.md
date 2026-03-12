@@ -50,8 +50,8 @@ See [docs/installation.md](docs/installation.md) for platform-specific steps.
 
 ```bash
 # Clone the repository
-git clone https://github.com/VoxHash/VAForge_Checker.git
-cd VAForge_Checker
+git clone https://github.com/VoxHash/BrowserBookmarkChecker.git
+cd BrowserBookmarkChecker
 
 # Install dependencies
 pip install -r requirements.txt
@@ -155,8 +155,8 @@ pip install -e ".[dev]"
 pytest
 
 # Lint and format
-ruff check bookmark_checker media_checker tests
-black bookmark_checker media_checker tests
+ruff check bookmark_checker tests
+black bookmark_checker tests
 ```
 
 ## 🔒 Security
@@ -172,7 +172,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **Documentation**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/VoxHash/VAForge_Checker/issues)
+- **Issues**: [GitHub Issues](https://github.com/VoxHash/BrowserBookmarkChecker/issues)
 - **Email**: contact@voxhash.dev
 - **FAQ**: [docs/faq.md](docs/faq.md)
 

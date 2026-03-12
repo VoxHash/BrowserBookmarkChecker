@@ -23,7 +23,7 @@
 ## Before Asking for Help
 
 1. Check the [README.md](README.md) and [docs/](docs/) folder
-2. Search existing [GitHub Issues](https://github.com/VoxHash/VAForge_Checker/issues)
+2. Search existing [GitHub Issues](https://github.com/VoxHash/BrowserBookmarkChecker/issues)
 3. Review [CHANGELOG.md](CHANGELOG.md) for recent changes
 4. Check [troubleshooting guide](docs/troubleshooting.md)
 

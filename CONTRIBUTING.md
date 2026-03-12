@@ -10,8 +10,8 @@ Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ```bash
 # Clone the repository
-git clone https://github.com/VoxHash/VAForge_Checker.git
-cd VAForge_Checker
+git clone https://github.com/VoxHash/BrowserBookmarkChecker.git
+cd BrowserBookmarkChecker
 
 # Install dependencies
 pip install -r requirements.txt
@@ -23,7 +23,7 @@ pip install -e ".[dev]"
 pytest
 
 # Run with coverage
-pytest --cov=bookmark_checker --cov=media_checker --cov-report=term-missing
+pytest --cov=bookmark_checker --cov-report=term-missing
 ```
 
 ## Code Quality
@@ -32,13 +32,13 @@ Before submitting a PR, ensure:
 
 ```bash
 # Lint code
-ruff check bookmark_checker media_checker tests
+ruff check bookmark_checker tests
 
 # Format code
-black bookmark_checker media_checker tests
+black bookmark_checker tests
 
 # Type check
-mypy bookmark_checker media_checker
+mypy bookmark_checker
 ```
 
 ## Branching & Commit Style
@@ -76,13 +76,9 @@ mypy bookmark_checker media_checker
 ## Project Structure
 
 ```
-VAForge_Checker/
+BrowserBookmarkChecker/
 ├── bookmark_checker/      # Bookmark deduplication tool
 │   ├── core/             # Core logic (parsers, dedupe, merge, exporters)
-│   ├── ui/               # PyQt6 GUI
-│   └── i18n/             # Translations
-├── media_checker/        # Media duplicate finder
-│   ├── core/             # Core logic (scanner, dedupe, metadata, exporters)
 │   ├── ui/               # PyQt6 GUI
 │   └── i18n/             # Translations
 ├── tests/                # Test suite

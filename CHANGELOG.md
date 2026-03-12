@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Updated `.gitignore` with comprehensive patterns
-- Improved CI workflow to test both `bookmark_checker` and `media_checker` packages
+- Improved CI workflow for bookmark_checker package
+- Removed `media_checker` package (separate project)
+- Updated repository URLs to `https://github.com/VoxHash/BrowserBookmarkChecker`
 
 ## [1.0.0] - 2026-03-12
 

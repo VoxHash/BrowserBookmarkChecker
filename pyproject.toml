@@ -3,16 +3,16 @@ requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "media-duplicate-checker"
+name = "browser-bookmark-checker"
 version = "1.0.0"
-description = "Cross-platform video and audio duplicate finder with GUI and CLI"
+description = "Cross-platform desktop application for merging and deduplicating browser bookmarks"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [
     {name = "VoxHash Technologies", email = "contact@voxhash.dev"}
 ]
-keywords = ["video", "audio", "duplicate", "deduplication", "media", "files"]
+keywords = ["bookmark", "deduplication", "browser", "bookmark-manager", "url-canonicalization", "fuzzy-matching"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: End Users/Desktop",
@@ -22,10 +22,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "mutagen>=1.47.0",
-    "opencv-python>=4.8.0",
-    "Pillow>=10.0.0",
-    "imagehash>=4.3.1",
     "PyQt6>=6.6.0",
     "rapidfuzz>=3.0.0",
     "beautifulsoup4>=4.12.0",
@@ -42,10 +38,10 @@ dev = [
 ]
 
 [project.scripts]
-media-duplicate-checker = "media_checker.app:main"
+browser-bookmark-checker = "bookmark_checker.app:main"
 
 [tool.setuptools]
-packages = ["media_checker", "bookmark_checker"]
+packages = ["bookmark_checker"]
 
 [tool.ruff]
 line-length = 100
@@ -82,10 +78,6 @@ strict_equality = true
 [[tool.mypy.overrides]]
 module = [
     "PyQt6.*",
-    "cv2.*",
-    "mutagen.*",
-    "PIL.*",
-    "imagehash.*",
     "rapidfuzz.*",
     "bs4.*",
 ]
@@ -96,10 +88,10 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-q --cov=media_checker --cov=bookmark_checker --cov-report=term-missing --cov-report=xml --cov-fail-under=85"
+addopts = "-q --cov=bookmark_checker --cov-report=term-missing --cov-report=xml --cov-fail-under=85"
 
 [tool.coverage.run]
-source = ["media_checker", "bookmark_checker"]
+source = ["bookmark_checker"]
 omit = [
     "*/tests/*",
     "*/__pycache__/*",

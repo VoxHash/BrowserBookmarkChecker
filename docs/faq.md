@@ -130,11 +130,11 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines. We welcome:
 
 ### Where do I report bugs?
 
-Use the [bug report template](https://github.com/VoxHash/VAForge_Checker/issues/new?template=bug_report.md) on GitHub.
+Use the [bug report template](https://github.com/VoxHash/BrowserBookmarkChecker/issues/new?template=bug_report.md) on GitHub.
 
 ### How do I suggest a feature?
 
-Use the [feature request template](https://github.com/VoxHash/VAForge_Checker/issues/new?template=feature_request.md) on GitHub.
+Use the [feature request template](https://github.com/VoxHash/BrowserBookmarkChecker/issues/new?template=feature_request.md) on GitHub.
 
 ## More Questions?
 

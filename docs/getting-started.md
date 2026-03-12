@@ -9,8 +9,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/VoxHash/VAForge_Checker.git
-cd VAForge_Checker
+git clone https://github.com/VoxHash/BrowserBookmarkChecker.git
+cd BrowserBookmarkChecker
 
 # Install dependencies
 pip install -r requirements.txt

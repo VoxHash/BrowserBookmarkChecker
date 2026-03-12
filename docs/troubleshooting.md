@@ -107,7 +107,7 @@
 If you're still experiencing issues:
 
 1. Check [FAQ](faq.md) for common questions
-2. Search [GitHub Issues](https://github.com/VoxHash/VAForge_Checker/issues)
+2. Search [GitHub Issues](https://github.com/VoxHash/BrowserBookmarkChecker/issues)
 3. Review [CHANGELOG.md](../CHANGELOG.md) for recent changes
 4. Open a new issue with:
    - OS and Python version
