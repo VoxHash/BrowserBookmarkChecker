@@ -206,8 +206,7 @@ class MainWindow(QMainWindow):
 
     def _setup_style(self) -> None:
         """Set up dark Fusion style."""
-        self.setStyleSheet(
-            """
+        self.setStyleSheet("""
             QMainWindow {
                 background-color: #2b2b2b;
                 color: #ffffff;
@@ -257,8 +256,7 @@ class MainWindow(QMainWindow):
             QProgressBar::chunk {
                 background-color: #4caf50;
             }
-        """
-        )
+        """)
 
     def dragEnterEvent(self, event: QDragEnterEvent | None) -> None:
         """Handle drag enter event."""
@@ -453,9 +451,7 @@ class MainWindow(QMainWindow):
                 "exported_to",
                 "Exported to {path1} and {path2}",
             )
-            self.status_label.setText(
-                exported_to_msg.format(path1=output_path, path2=csv_path)
-            )
+            self.status_label.setText(exported_to_msg.format(path1=output_path, path2=csv_path))
             exported_msg = get_translation(
                 self.current_language,
                 "exported_successfully",
@@ -473,9 +469,7 @@ class MainWindow(QMainWindow):
                 f"Failed to export:\n{e}",
             )
             self.status_label.setText(
-                get_translation(
-                    self.current_language, "error_during_export", "Error during export"
-                )
+                get_translation(self.current_language, "error_during_export", "Error during export")
             )
         finally:
             self.progress_bar.setVisible(False)
