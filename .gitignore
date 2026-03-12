@@ -1,12 +1,114 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Testing
+/coverage
+*.lcov
+.nyc_output
+
+# Next.js
+/.next/
+/out/
+/build
+.next
+out
+build
+
+# Production
+dist/
+*.tsbuildinfo
+
+# Misc
+.DS_Store
+*.pem
+Thumbs.db
+desktop.ini
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local env files
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Note: .env.example should be committed (it's a template)
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma
+prisma/migrations/
+
+# IDE
+.vscode/
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+.turbo
+
+# Configuration files
+.editorconfig
+.npmrc
+.nvmrc
+.specstory
+.cursorignore
+.cursorindexingignore
+
+# AI-generated documentation
+AI_M/
+
+# AI-generated temporary scripts
+AI_S/
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+env/
+venv/
+ENV/
+.venv
+
+# Python build artifacts
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -22,19 +124,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
 
 # Testing
 .pytest_cache/
@@ -56,16 +145,18 @@ dmypy.json
 *.deb
 *.rpm
 *.msi
-dist/
-build/
 
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
+# Temporary scripts
+create-env-example.sh
+create-env-example.py
+fix-*.sh
+resolve-*.sh
+push-*.sh
+reset-git-history.sh
+setup-github-auth.sh
+push-updates-final.sh
+push-all.sh
 
 # Project specific
 merged_bookmarks.html
 *_dedupe_report.csv
-*.log
-

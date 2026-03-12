@@ -1,60 +1,66 @@
-# BrowserBookmarkChecker
+# Browser-Bookmark Checker
 
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-**BrowserBookmarkChecker** is a production-quality, cross-platform desktop application for merging and deduplicating browser bookmarks. It supports both GUI (PyQt6) and CLI interfaces, handles multiple bookmark formats, and provides intelligent URL canonicalization with optional fuzzy title matching.
+> Cross-platform desktop application for merging and deduplicating browser bookmarks with intelligent URL canonicalization and fuzzy title matching.
 
-## Features
-
-### Core Functionality
+## ✨ Features
 
 - **Multi-Format Support**: Import Netscape HTML and Chrome/Chromium JSON bookmark files
-- **Intelligent Deduplication**: 
-  - URL canonicalization (removes tracking parameters, normalizes URLs)
-  - Optional fuzzy title matching within same domain (using RapidFuzz)
-  - Configurable similarity threshold (0-100)
+- **Intelligent Deduplication**: URL canonicalization removes tracking parameters and normalizes URLs
+- **Fuzzy Matching**: Optional fuzzy title matching within same domain using RapidFuzz
 - **Cross-Platform**: Runs on Windows, macOS, and Linux
-- **Dual Interface**: 
-  - **GUI**: Modern PyQt6 interface with drag & drop support
-  - **CLI**: Full-featured command-line interface
-- **Export Formats**:
-  - Merged Netscape HTML file (compatible with all browsers)
-  - CSV deduplication report with statistics
-- **Multi-Language Support**: i18n support for 11 languages (English, Russian, Portuguese, Spanish, Estonian, French, German, Japanese, Chinese, Korean, Indonesian)
+- **Dual Interface**: Modern PyQt6 GUI with drag & drop, plus full-featured CLI
+- **Multi-Language**: i18n support for 11 languages
 - **Privacy-First**: Fully offline, no telemetry, no network calls
 
-### Technical Highlights
+## 🧭 Table of Contents
 
-- **Clean Architecture**: Modular design with parsers → normalization → dedupe → merge → exporters
-- **Deterministic**: Identical inputs produce identical outputs
-- **Extensible**: Easy to add new parsers (Firefox .jsonlz4, Safari plist, etc.)
-- **Production-Ready**: Comprehensive tests, type checking, linting, CI/CD
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Configuration](#-configuration)
+- [Examples](#-examples)
+- [Architecture](#-architecture)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## Installation
+## 🚀 Quick Start
 
-### Prerequisites
+```bash
+# 1) Install
+pip install -r requirements.txt
 
-- Python 3.11 or higher
-- pip
+# 2) Run GUI
+python -m bookmark_checker
 
-### Install from Source
+# 3) Or use CLI
+python -m bookmark_checker --input bookmarks.html --out merged.html
+```
+
+## 💿 Installation
+
+See [docs/installation.md](docs/installation.md) for platform-specific steps.
+
+**Prerequisites**: Python 3.11 or higher
 
 ```bash
 # Clone the repository
-git clone https://github.com/VoxHash/bookmark_checker.git
-cd bookmark_checker
+git clone https://github.com/VoxHash/VAForge_Checker.git
+cd VAForge_Checker
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Optional: Install in development mode with dev dependencies
+# Optional: Install in development mode
 pip install -e ".[dev]"
 ```
 
-## Quick Start
+## 🛠 Usage
 
 ### GUI Mode
 
@@ -64,33 +70,14 @@ Launch the graphical interface:
 python -m bookmark_checker
 ```
 
-Or use the convenience script:
-
-```bash
-./scripts/run_gui.sh
-```
-
-**GUI Features:**
+**Workflow**:
 1. Click **Import Files** or drag & drop bookmark files
 2. Adjust **Similarity** slider (0-100, default 85)
 3. Click **Find & Merge** to deduplicate
 4. Review results in the table
 5. Click **Export Merged** to save HTML and CSV reports
 
-### Screenshots
-
-**Import Files:**
-![Import Files](screenshots/import-files-screenshot.png)
-
-**Find & Merge:**
-![Find & Merge](screenshots/find-merge-screenshot.png)
-
-**Export Merged:**
-![Export Merged](screenshots/export-merged.png)
-
 ### CLI Mode
-
-Merge bookmarks from command line:
 
 ```bash
 python -m bookmark_checker \
@@ -99,278 +86,99 @@ python -m bookmark_checker \
     --similarity 85
 ```
 
-**CLI Options:**
+**Options**:
 - `--input`, `-i`: Input bookmark files (HTML or JSON), multiple files allowed
 - `--out`, `-o`: Output HTML file path (default: `merged_bookmarks.html`)
 - `--similarity`, `-s`: Similarity threshold for fuzzy matching (0-100, default: 85)
-- `--no-fuzzy`: Disable fuzzy title matching (use only canonical URL matching)
+- `--no-fuzzy`: Disable fuzzy title matching
 
-**Example:**
+See [docs/usage.md](docs/usage.md) and [docs/cli.md](docs/cli.md) for detailed documentation.
 
-```bash
-# Merge Chrome and Firefox exports
-python -m bookmark_checker \
-    --input chrome_bookmarks.html firefox_bookmarks.html \
-    --out merged.html \
-    --similarity 90
+## ⚙️ Configuration
 
-# Process with fuzzy matching disabled
-python -m bookmark_checker \
-    --input bookmarks.json \
-    --out output.html \
-    --no-fuzzy
-```
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Similarity Threshold | Minimum similarity score (0-100) for fuzzy matching | 85 |
+| Fuzzy Matching | Enable fuzzy title matching within same domain | Enabled |
+| Export Format | Output format (HTML, CSV) | HTML + CSV |
 
-## Usage
-
-### Input Formats
-
-**Netscape HTML** (`.html`):
-- Exported from Chrome, Edge, Brave, Firefox, Safari
-- Standard format with `<DL>`, `<DT>`, `<H3>`, `<A>` elements
-- Supports folder hierarchy and `ADD_DATE` timestamps
-
-**Chrome JSON** (`.json`):
-- Chrome/Chromium `Bookmarks` file
-- Located at:
-  - Windows: `%LOCALAPPDATA%\Google\Chrome\User Data\Default\Bookmarks`
-  - macOS: `~/Library/Application Support/Google/Chrome/Default/Bookmarks`
-  - Linux: `~/.config/google-chrome/Default/Bookmarks`
-
-### Output Formats
-
-**Merged HTML** (`merged_bookmarks.html`):
-- Valid Netscape HTML format
-- Organized by domain: `Merged/<domain>/`
-- Preserves `ADD_DATE` when available
-- Ready to import into any browser
-
-**CSV Report** (`merged_bookmarks_dedupe_report.csv`):
-- Columns: `canonical_url`, `title`, `count`, `example_folders`, `sources`
-- Sorted by count (descending), then title (ascending)
-- Shows duplicate groups and their statistics
-
-### URL Canonicalization
-
-The tool normalizes URLs to identify duplicates:
-
-- **Lowercases** scheme and host
-- **Removes** default ports (:80, :443)
-- **Strips** URL fragments (`#section`)
-- **Removes** trailing slashes on non-root paths
-- **Filters** tracking parameters:
-  - `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`
-  - `gclid`, `fbclid`, `mc_cid`, `mc_eid`, `igshid`, `yclid`
-  - `_hsenc`, `_hsmi`, `mkt_tok`, `ref`, `cmp`, `spm`, `ved`, `si`, `s`, `trk`, `scid`, `ck_subscriber_id`
-- **Preserves** non-tracking query parameters
-
-**Example:**
-```
-https://example.com/page?utm_source=email&id=123#section
-→ https://example.com/page?id=123
-```
-
-### Fuzzy Title Matching
-
-When enabled, the tool uses RapidFuzz to merge bookmarks with similar titles within the same domain:
-
-- **Domain-scoped**: Only compares titles from the same domain
-- **Configurable threshold**: 0-100 (default: 85)
-- **Algorithm**: `partial_ratio` for flexible matching
-
-**Example:**
-- "Python Tutorial" and "Python Tutorial Guide" (same domain) → merged if similarity ≥ threshold
-- "Python Tutorial" (example.com) and "Python Tutorial" (other.com) → not merged (different domains)
-
-## Configuration
-
-### Similarity Threshold
-
-- **0-100**: Minimum similarity score for fuzzy title matching
+**Similarity Threshold Guide**:
 - **85 (default)**: Balanced between strict and lenient
-- **100**: Only exact title matches (within same domain)
+- **100**: Only exact title matches
 - **0-50**: Very lenient (may merge unrelated bookmarks)
 
-### Disabling Fuzzy Matching
+See [docs/configuration.md](docs/configuration.md) for full configuration reference.
 
-Use `--no-fuzzy` flag (CLI) or disable in GUI to use only canonical URL matching. Useful for:
-- Large datasets where fuzzy matching is slow
-- When you want strict URL-based deduplication only
+## 📚 Examples
 
-## Extending Parsers
+- **[Basic Deduplication](docs/examples/example-01.md)** — Merge Chrome and Firefox bookmarks
+- **[Programmatic Usage](docs/examples/example-02.md)** — Use the Python API
+- More examples: [docs/examples/](docs/examples/)
 
-To add support for new bookmark formats (e.g., Firefox `.jsonlz4`, Safari `.plist`):
+## 🧩 Architecture
 
-1. **Create parser function** in `bookmark_checker/core/parsers.py`:
+Browser-Bookmark Checker follows a modular architecture:
 
-```python
-def parse_firefox_jsonlz4(path: str) -> BookmarkCollection:
-    """Parse Firefox jsonlz4 bookmark file."""
-    # Implementation here
-    pass
+```
+Input Files → Parsers → Normalization → Deduplication → Merge → Exporters → Output Files
 ```
 
-2. **Update `parse_many()`** to detect and route to new parser:
+**Key Components**:
+- **Parsers**: Parse Netscape HTML and Chrome JSON formats
+- **URL Canonicalization**: Remove tracking parameters, normalize URLs
+- **Deduplication**: Canonical URL matching + optional fuzzy title matching
+- **Merging**: Select representatives and organize by domain
+- **Exporters**: Generate HTML and CSV outputs
 
-```python
-def parse_many(paths: List[str]) -> BookmarkCollection:
-    # ...
-    if path_obj.suffix.lower() == ".jsonlz4":
-        parsed = parse_firefox_jsonlz4(str(path_obj))
-    # ...
-```
+See [docs/architecture.md](docs/architecture.md) for detailed architecture documentation.
 
-3. **Add tests** in `tests/test_parsers.py`
+## 🗺 Roadmap
 
-4. **Update documentation**
+Planned milestones live in [ROADMAP.md](ROADMAP.md). For changes, see [CHANGELOG.md](CHANGELOG.md).
 
-## Building Standalone Binaries
+**Upcoming**:
+- Firefox `.jsonlz4` format support
+- Safari `.plist` format support
+- Performance optimizations for large datasets
+- Enhanced error messages and user experience
 
-### Nuitka (Preferred)
+## 🤝 Contributing
 
+We welcome PRs! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and follow the PR template.
+
+**Quick Start**:
 ```bash
-./scripts/build_nuitka.sh
-```
-
-Output: `dist/BrowserBookmarkChecker` (or `.exe` on Windows)
-
-### PyInstaller (Fallback)
-
-```bash
-./scripts/build_pyinstaller.sh
-```
-
-Output: `dist/BrowserBookmarkChecker` (or `.exe` on Windows)
-
-**Note**: Ensure icons are generated from `assets/icon.svg`:
-- **Windows**: `icon.ico` (multi-size ICO file)
-- **macOS**: `icon.icns` (IconSet)
-- **Linux**: `icon_256.png` (PNG)
-
-Use tools like ImageMagick, Inkscape, or online converters to generate platform-specific icons.
-
-## Development
-
-### Setup
-
-```bash
-# Install with dev dependencies
+# Install dev dependencies
 pip install -e ".[dev]"
-```
 
-### Code Quality
-
-```bash
-# Lint
-ruff check bookmark_checker tests
-
-# Format
-black bookmark_checker tests
-
-# Type check
-mypy bookmark_checker
-```
-
-### Testing
-
-```bash
-# Run tests with coverage
+# Run tests
 pytest
 
-# Run specific test file
-pytest tests/test_utils.py
-
-# Run with verbose output
-pytest -v
+# Lint and format
+ruff check bookmark_checker media_checker tests
+black bookmark_checker media_checker tests
 ```
 
-### Project Structure
+## 🔒 Security
 
-```
-BrowserBookmarkChecker/
-├── bookmark_checker/          # Main package
-│   ├── core/                  # Core logic
-│   │   ├── models.py          # Data models
-│   │   ├── utils.py           # URL canonicalization
-│   │   ├── parsers.py         # Bookmark parsers
-│   │   ├── dedupe.py          # Deduplication
-│   │   ├── merge.py           # Merging logic
-│   │   └── exporters.py       # Export functions
-│   ├── ui/                    # GUI
-│   │   └── main_window.py     # PyQt6 window
-│   ├── i18n/                  # Translations
-│   ├── app.py                 # CLI entry point
-│   └── __main__.py            # Module entry
-├── tests/                     # Test suite
-├── examples/                   # Sample data
-├── assets/                     # Icons
-├── scripts/                    # Build/run scripts
-└── .github/workflows/         # CI/CD
-```
+Please report vulnerabilities via [SECURITY.md](SECURITY.md).
 
-## FAQ
+**Privacy**: This tool processes bookmark files locally and does not send data over the network or collect telemetry.
 
-### Large Files (100k+ bookmarks)
-
-The tool is optimized for large datasets:
-- Incremental processing where possible
-- Efficient data structures
-- Memory-conscious parsing
-
-For very large files (500k+), consider:
-- Processing in batches
-- Using `--no-fuzzy` to speed up
-- Increasing system RAM
-
-### Fuzzy Matching Performance
-
-Fuzzy matching adds computational overhead:
-- **Small datasets** (<10k): Negligible impact
-- **Medium datasets** (10k-50k): 2-5 seconds additional
-- **Large datasets** (50k+): May take 10-30 seconds
-
-Use `--no-fuzzy` for faster processing on large datasets.
-
-### Import Errors
-
-If a file fails to parse:
-- Check file format (must be valid Netscape HTML or Chrome JSON)
-- Verify file encoding (UTF-8)
-- The tool continues processing other files (errors are logged)
-
-### Export Format Compatibility
-
-The exported HTML is compatible with:
-- ✅ Chrome/Chromium
-- ✅ Firefox
-- ✅ Edge
-- ✅ Safari
-- ✅ Brave
-- ✅ Opera
-
-### Adding New Languages
-
-Edit `bookmark_checker/i18n/translations.py` and add translations for all keys in the `TRANSLATIONS` dictionary.
-
-## Roadmap
-
-See [ROADMAP.md](ROADMAP.md) for planned features and improvements.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to the project.
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/VoxHash/bookmark_checker/issues)
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/VoxHash/VAForge_Checker/issues)
 - **Email**: contact@voxhash.dev
-- **Documentation**: See `docs/` folder for detailed documentation
+- **FAQ**: [docs/faq.md](docs/faq.md)
 
-## Acknowledgments
+See [SUPPORT.md](SUPPORT.md) for more support options.
+
+## 🙏 Acknowledgments
 
 - **BeautifulSoup4** for HTML parsing
 - **RapidFuzz** for fuzzy string matching
@@ -380,6 +188,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Version**: 1.0.0  
-**Release Date**: August 29, 2025  
 **Maintained by**: VoxHash Technologies
-

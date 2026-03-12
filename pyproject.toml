@@ -3,16 +3,16 @@ requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "browserbookmarkchecker"
+name = "media-duplicate-checker"
 version = "1.0.0"
-description = "Cross-platform bookmark merger and deduplicator with GUI and CLI"
+description = "Cross-platform video and audio duplicate finder with GUI and CLI"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [
     {name = "VoxHash Technologies", email = "contact@voxhash.dev"}
 ]
-keywords = ["bookmarks", "deduplication", "browser", "merge"]
+keywords = ["video", "audio", "duplicate", "deduplication", "media", "files"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: End Users/Desktop",
@@ -22,10 +22,13 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "beautifulsoup4>=4.12.0",
-    "lxml>=4.9.0",
-    "rapidfuzz>=3.0.0",
+    "mutagen>=1.47.0",
+    "opencv-python>=4.8.0",
+    "Pillow>=10.0.0",
+    "imagehash>=4.3.1",
     "PyQt6>=6.6.0",
+    "rapidfuzz>=3.0.0",
+    "beautifulsoup4>=4.12.0",
 ]
 
 [project.optional-dependencies]
@@ -39,10 +42,10 @@ dev = [
 ]
 
 [project.scripts]
-bookmark-checker = "bookmark_checker.app:main"
+media-duplicate-checker = "media_checker.app:main"
 
 [tool.setuptools]
-packages = ["bookmark_checker"]
+packages = ["media_checker", "bookmark_checker"]
 
 [tool.ruff]
 line-length = 100
@@ -79,7 +82,12 @@ strict_equality = true
 [[tool.mypy.overrides]]
 module = [
     "PyQt6.*",
+    "cv2.*",
+    "mutagen.*",
+    "PIL.*",
+    "imagehash.*",
     "rapidfuzz.*",
+    "bs4.*",
 ]
 ignore_missing_imports = true
 
@@ -88,10 +96,10 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-q --cov=bookmark_checker --cov-report=term-missing --cov-report=xml --cov-fail-under=85"
+addopts = "-q --cov=media_checker --cov=bookmark_checker --cov-report=term-missing --cov-report=xml --cov-fail-under=85"
 
 [tool.coverage.run]
-source = ["bookmark_checker"]
+source = ["media_checker", "bookmark_checker"]
 omit = [
     "*/tests/*",
     "*/__pycache__/*",

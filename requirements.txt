@@ -1,15 +1,18 @@
-# BrowserBookmarkChecker Requirements
+# MediaDuplicateChecker Requirements
 # Python 3.11+
 
 # Core dependencies
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
-
-# Fuzzy matching (optional but recommended)
-rapidfuzz>=3.0.0
+mutagen>=1.47.0
+opencv-python>=4.8.0
+Pillow>=10.0.0
+imagehash>=4.3.1
 
 # GUI
 PyQt6>=6.6.0
+
+# Bookmark checker dependencies
+rapidfuzz>=3.0.0
+beautifulsoup4>=4.12.0
 
 # Development dependencies (install separately with pip install -e ".[dev]")
 # ruff>=0.1.0

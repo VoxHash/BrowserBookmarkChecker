@@ -94,16 +94,19 @@ class MainWindow(QMainWindow):
 
         self.btn_import = QPushButton()
         self.btn_import.clicked.connect(self._import_files)
+        self.btn_import.setToolTip("Import bookmark files (HTML or JSON)")
         top_layout.addWidget(self.btn_import)
 
         self.btn_merge = QPushButton()
         self.btn_merge.clicked.connect(self._find_and_merge)
         self.btn_merge.setEnabled(False)
+        self.btn_merge.setToolTip("Find and merge duplicate bookmarks")
         top_layout.addWidget(self.btn_merge)
 
         self.btn_export = QPushButton()
         self.btn_export.clicked.connect(self._export_merged)
         self.btn_export.setEnabled(False)
+        self.btn_export.setToolTip("Export merged bookmarks to HTML and CSV")
         top_layout.addWidget(self.btn_export)
 
         top_layout.addStretch()
@@ -119,6 +122,8 @@ class MainWindow(QMainWindow):
         self.similarity_slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.similarity_slider.setTickInterval(10)
         self.similarity_slider.setMinimumWidth(200)
+        self.similarity_slider.setToolTip("Similarity threshold (0-100) for fuzzy title matching")
+        self.similarity_slider.setAccessibleName("Similarity threshold slider")
         top_layout.addWidget(self.similarity_slider)
 
         self.similarity_label_value = QLabel("85")
