@@ -471,7 +471,9 @@ class MainWindow(QMainWindow):
                 f"Failed to export:\n{e}",
             )
             self.status_label.setText(
-                get_translation(self.current_language, "error_during_export", "Error during export")
+                get_translation(
+                    self.current_language, "error_during_export", "Error during export"
+                )
             )
         finally:
             self.progress_bar.setVisible(False)
