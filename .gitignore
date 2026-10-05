@@ -128,12 +128,18 @@ MANIFEST
 # Testing
 .pytest_cache/
 .coverage
+coverage.xml
 htmlcov/
 .tox/
 .hypothesis/
+.ruff_cache/
+.mypy_cache/
+
+# PyInstaller
+*.spec
+*.manifest
 
 # MyPy
-.mypy_cache/
 .dmypy.json
 dmypy.json
 

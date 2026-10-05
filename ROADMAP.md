@@ -1,68 +1,44 @@
 # Roadmap — Browser-Bookmark Checker
 
-## Q1 2026
+Realistic priorities based on the shipped 1.1.0 baseline (GUI + CLI merge/dedupe, Netscape HTML & Chrome JSON, offline PyInstaller release builds).
 
-### Performance & Stability
-- ✅ Fix missing dependencies and package configuration
-- ✅ Improve accessibility (tooltips, accessible names)
-- 🔄 Optimize fuzzy matching for large datasets
-- 🔄 Add progress indicators for CLI operations
+## Near term (Q4 2026 – Q1 2027)
 
-### New Formats
-- 🔄 Firefox `.jsonlz4` bookmark format support
-- 🔄 Safari `.plist` bookmark format support
+### Formats
+- [ ] Firefox bookmark export support beyond Netscape HTML (native JSON where practical)
+- [ ] Safari bookmark import path (read-only export → HTML/JSON bridge)
 
-### User Experience
-- 🔄 Enhanced error messages with actionable suggestions
-- 🔄 Keyboard shortcuts in GUI
-- 🔄 Dark/light theme toggle
+### UX & CLI
+- [ ] Progress output for large CLI merges
+- [ ] Clearer CLI errors for missing/unreadable input files
+- [ ] Keyboard shortcuts for primary GUI actions (import, merge, export)
 
-## Q2 2026
+### Quality
+- [ ] Raise line coverage toward 90% on `core/` parsers and exporters
+- [ ] Smoke-test packaged executables in CI before attaching to releases
 
-### Advanced Features
-- Export formats: JSON, XML
-- Bookmark folder merging strategies
-- Undo/redo functionality in GUI
+## Next (2027 H1)
 
-### Testing & Quality
-- Increase test coverage to 90%+
-- Add integration tests
-- Performance benchmarks
+### Features
+- [ ] Additional export formats (JSON bookmark dump alongside HTML/CSV)
+- [ ] Optional folder-aware merge strategies (keep first path vs. flatten)
+- [ ] Similarity presets for “strict URL only” vs. “aggressive fuzzy”
 
-## Q3 2026
+### Performance
+- [ ] Faster fuzzy matching path for 50k+ bookmark sets
+- [ ] Memory-friendly streaming parse for very large HTML exports
 
-### Architecture
-- Plugin system for custom parsers
-- Caching layer for metadata
-- Database backend option
+## Later (backlog)
 
-### Advanced Features
-- Bookmark tagging and categorization
-- Search and filtering
-- Statistics dashboard
+- Plugin-style custom parsers (only if a second external format lands)
+- Browser extension that exports into this tool’s formats (separate project)
+- Cloud sync — **out of scope** while the product stays privacy-first / offline
 
-## Q4 2026
+## Explicitly not planned
 
-### Platform Expansion
-- Browser extension for direct import
-- Cloud storage integration
-- Docker containerization
-
-### Mobile & API
-- REST API for programmatic access
-- Native mobile apps (future consideration)
-
-## Future Ideas
-
-- Enterprise features for organizations
-- Bookmark sync across devices
-- Community-driven parser library
-- AI-powered bookmark organization
-- Collaborative bookmark sharing
+- Telemetry or automated online link checking
+- Renaming the project: **BrowserBookmarkChecker** stays. The name is descriptive for search (“browser bookmark” + duplicate checking), already published as `v1.0.0`/`v1.1.0` with matching PyPI-style package id and GitHub URL. A marketing rename would break links without a clear discoverability gain over better topics and description.
 
 ---
 
-**Legend:**
-- ✅ Completed
-- 🔄 In Progress
-- 📋 Planned
+**Legend:** unchecked = planned · checked = done in a released version

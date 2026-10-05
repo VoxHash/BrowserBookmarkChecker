@@ -7,17 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-05
+
 ### Added
-- CI/CD workflows for automated testing and releases
-- Comprehensive documentation structure (docs/)
-- GitHub issue and PR templates
-- Security policy and code of conduct
+- Cross-platform executable builds (Linux, macOS, Windows) in the release workflow via PyInstaller (`34edb71`)
+- Unit tests for `Bookmark` equality/hashing and `BookmarkCollection` length/iteration to keep coverage above the project gate
 
 ### Changed
-- Updated `.gitignore` with comprehensive patterns
-- Improved CI workflow for bookmark_checker package
-- Removed `media_checker` package (separate project)
-- Updated repository URLs to `https://github.com/VoxHash/BrowserBookmarkChecker`
+- Repository hygiene: ignore `coverage.xml`, `.ruff_cache/`, and PyInstaller `*.spec` artifacts
+- Roadmap realigned to late-2026 priorities (formats, UX polish, export options)
+- Version bump to 1.1.0 across `pyproject.toml` and package metadata
+
+### Fixed
+- CI: Node.js 24 setup and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` to silence Actions warnings (`25157a5`, `a85b516`)
+- Ruff B905: pass `strict=False` to `zip()` (`7261066`)
+- Black formatting across GUI translation call sites (`fa67e9f`, `048d340`, `6bbf571`, `a1de80b`, `e211a22`)
+- CI workflow updates for test reliability (`3224cad`)
+
+### Removed
+- Stray `DEVELOPMENT_GOALS.md` outside the documentation kit
+- Obsolete `RELEASE.md` and leftover `media_checker` package references (`99e7e7c`, `d2f2ae9`)
 
 ## [1.0.0] - 2026-03-12
 
@@ -42,3 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package configuration mismatch in setuptools
 - Type checking configuration updated for all dependencies
 - Python compatibility (removed `strict=False` from zip)
+
+[Unreleased]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/VoxHash/BrowserBookmarkChecker/releases/tag/v1.0.0
