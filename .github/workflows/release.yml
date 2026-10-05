@@ -82,11 +82,26 @@ jobs:
         with:
           path: dist/
 
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          if [ -f dist/dist-ubuntu-latest/BrowserBookmarkChecker ]; then
+            cp dist/dist-ubuntu-latest/BrowserBookmarkChecker release-assets/BrowserBookmarkChecker-linux-x64
+          fi
+          if [ -f dist/dist-windows-latest/BrowserBookmarkChecker.exe ]; then
+            cp dist/dist-windows-latest/BrowserBookmarkChecker.exe release-assets/BrowserBookmarkChecker-windows-x64.exe
+          fi
+          if [ -f dist/dist-macos-latest/BrowserBookmarkChecker ]; then
+            cp dist/dist-macos-latest/BrowserBookmarkChecker release-assets/BrowserBookmarkChecker-macos-x64
+          fi
+          cp dist/dist-ubuntu-latest/browser_bookmark_checker-*.whl release-assets/ 2>/dev/null || true
+          cp dist/dist-ubuntu-latest/browser_bookmark_checker-*.tar.gz release-assets/ 2>/dev/null || true
+          ls -la release-assets/
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            dist/*
+          files: release-assets/*
           generate_release_notes: true
           draft: false
           prerelease: false

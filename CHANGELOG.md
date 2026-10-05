@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Release workflow now flattens PyInstaller/wheel artifacts before attaching them to GitHub Releases (top-level `dist/*` previously skipped nested download-artifact folders)
+
 ## [1.1.0] - 2026-10-05
 
 ### Added
