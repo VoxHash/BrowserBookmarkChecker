@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "browser-bookmark-checker"
-version = "1.1.0"
+version = "1.1.1"
 description = "Cross-platform desktop application for merging and deduplicating browser bookmarks"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -40,8 +40,9 @@ dev = [
 [project.scripts]
 browser-bookmark-checker = "bookmark_checker.app:main"
 
-[tool.setuptools]
-packages = ["bookmark_checker"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bookmark_checker*"]
 
 [tool.ruff]
 line-length = 100

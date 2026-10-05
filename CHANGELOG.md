@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-05
+
 ### Fixed
-- Release workflow now flattens PyInstaller/wheel artifacts before attaching them to GitHub Releases (top-level `dist/*` previously skipped nested download-artifact folders)
+- Packaging: include full `bookmark_checker` package tree (`core/`, `ui/`, `i18n/`) in sdist and wheel via recursive setuptools discovery (v1.1.0 wheels omitted subpackages)
+- Release assets: name macOS binary from detected architecture (`macos-arm64` on current `macos-latest`) instead of hardcoding `macos-x64`
+- Release workflow: flatten PyInstaller/wheel artifacts before attaching them to GitHub Releases
+- macOS app bundle: set `CFBundleShortVersionString` / `CFBundleVersion` from `pyproject.toml` when a `.app` is produced
 
 ## [1.1.0] - 2026-10-05
 
@@ -55,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type checking configuration updated for all dependencies
 - Python compatibility (removed `strict=False` from zip)
 
-[Unreleased]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/VoxHash/BrowserBookmarkChecker/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/VoxHash/BrowserBookmarkChecker/releases/tag/v1.0.0

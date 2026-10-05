@@ -54,8 +54,23 @@ jobs:
       - name: Build executable (macOS)
         if: matrix.os == 'macos-latest'
         run: |
+          VERSION=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
           pyinstaller --onefile --windowed --name=BrowserBookmarkChecker --add-data "assets:assets" --add-data "bookmark_checker/i18n:bookmark_checker/i18n" --hidden-import=PyQt6 --hidden-import=rapidfuzz --hidden-import=bs4 bookmark_checker/__main__.py
-          chmod +x dist/BrowserBookmarkChecker
+          if [ -f dist/BrowserBookmarkChecker ]; then
+            chmod +x dist/BrowserBookmarkChecker
+          fi
+          if [ -d dist/BrowserBookmarkChecker.app ]; then
+            /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${VERSION}" \
+              dist/BrowserBookmarkChecker.app/Contents/Info.plist 2>/dev/null \
+              || /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string ${VERSION}" \
+              dist/BrowserBookmarkChecker.app/Contents/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION}" \
+              dist/BrowserBookmarkChecker.app/Contents/Info.plist 2>/dev/null \
+              || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string ${VERSION}" \
+              dist/BrowserBookmarkChecker.app/Contents/Info.plist
+          fi
+          # Record runner arch for release asset naming (macos-latest is currently arm64)
+          uname -m > dist/macos-arch.txt
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -85,15 +100,47 @@ jobs:
       - name: Prepare release assets
         run: |
           mkdir -p release-assets
+
+          detect_arch() {
+            # Prefer explicit arch marker from the build runner when present.
+            if [ -n "${2:-}" ] && [ -f "$2" ]; then
+              case "$(tr -d '[:space:]' < "$2")" in
+                x86_64|amd64) echo "x64" ;;
+                aarch64|arm64) echo "arm64" ;;
+                *) echo "x64" ;;
+              esac
+              return
+            fi
+            case "$(file -b "$1")" in
+              *x86-64*|*x86_64*|*Intel*80386*|*PE32+*) echo "x64" ;;
+              *aarch64*|*ARM64*|*arm64*) echo "arm64" ;;
+              *) echo "x64" ;;
+            esac
+          }
+
           if [ -f dist/dist-ubuntu-latest/BrowserBookmarkChecker ]; then
-            cp dist/dist-ubuntu-latest/BrowserBookmarkChecker release-assets/BrowserBookmarkChecker-linux-x64
+            LINUX_ARCH=$(detect_arch dist/dist-ubuntu-latest/BrowserBookmarkChecker)
+            cp dist/dist-ubuntu-latest/BrowserBookmarkChecker \
+              "release-assets/BrowserBookmarkChecker-linux-${LINUX_ARCH}"
           fi
+
           if [ -f dist/dist-windows-latest/BrowserBookmarkChecker.exe ]; then
-            cp dist/dist-windows-latest/BrowserBookmarkChecker.exe release-assets/BrowserBookmarkChecker-windows-x64.exe
+            WIN_ARCH=$(detect_arch dist/dist-windows-latest/BrowserBookmarkChecker.exe)
+            cp dist/dist-windows-latest/BrowserBookmarkChecker.exe \
+              "release-assets/BrowserBookmarkChecker-windows-${WIN_ARCH}.exe"
           fi
+
+          MAC_SRC=""
           if [ -f dist/dist-macos-latest/BrowserBookmarkChecker ]; then
-            cp dist/dist-macos-latest/BrowserBookmarkChecker release-assets/BrowserBookmarkChecker-macos-x64
+            MAC_SRC=dist/dist-macos-latest/BrowserBookmarkChecker
+          elif [ -f dist/dist-macos-latest/BrowserBookmarkChecker.app/Contents/MacOS/BrowserBookmarkChecker ]; then
+            MAC_SRC=dist/dist-macos-latest/BrowserBookmarkChecker.app/Contents/MacOS/BrowserBookmarkChecker
           fi
+          if [ -n "$MAC_SRC" ]; then
+            MAC_ARCH=$(detect_arch "$MAC_SRC" dist/dist-macos-latest/macos-arch.txt)
+            cp "$MAC_SRC" "release-assets/BrowserBookmarkChecker-macos-${MAC_ARCH}"
+          fi
+
           cp dist/dist-ubuntu-latest/browser_bookmark_checker-*.whl release-assets/ 2>/dev/null || true
           cp dist/dist-ubuntu-latest/browser_bookmark_checker-*.tar.gz release-assets/ 2>/dev/null || true
           ls -la release-assets/

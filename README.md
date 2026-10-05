@@ -187,5 +187,5 @@ See [SUPPORT.md](SUPPORT.md) for more support options.
 
 ---
 
-**Version**: 1.1.0  
+**Version**: 1.1.1  
 **Maintained by**: VoxHash Technologies
